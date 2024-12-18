@@ -41,6 +41,22 @@ app.post('/addEmployee', (req, res) => {
     res.status(201).json({ message: 'Employee added successfully.' });
   });
 });
+app.post('/checkEmployee', (req, res) => {
+    const { employeeID, email } = req.body;
+  
+    const query = `
+      SELECT * FROM employees WHERE employeeID = ? OR email = ?
+    `;
+    db.query(query, [employeeID, email], (err, results) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database query error.' });
+      }
+      if (results.length > 0) {
+        return res.status(200).json({ exists: true, data: results[0] });
+      }
+      return res.status(200).json({ exists: false });
+    });
+  });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
