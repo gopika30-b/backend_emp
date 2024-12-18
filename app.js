@@ -4,7 +4,7 @@ const cors = require('cors');
 const db = require('./database');
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({origin: 'https://creativecrusader.netlify.app'}));
 
 db.query(`
   CREATE TABLE IF NOT EXISTS employees (
